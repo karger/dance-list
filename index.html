@@ -48,15 +48,17 @@
             background-color: #f0f0f0;
         }
 
-        .songs a {
-            display: block;
-        }
 
         .video-column {
             grid-column: 2;
             display: flex;
             justify-content: space-around;
             align-items: top;
+        }
+
+        :where([mv-app]) .icon.mv-empty:where(:not([mv-mode="edit"]):not(td):not(th)) {
+           visibility: hidden;
+           display: initial;
         }
 
         .rating {
@@ -147,24 +149,22 @@
             <!-- Example Dance Entry -->
             <div mv-list="dance" class="dance-list">
                 <div mv-list-item class="dance-entry">
-                    <div property="title" mv-default>A Dance</div>
+                    <div property="title">A Dance</div>
                     <div mv-list="song" class="songs">
                         <div mv-list-item class="song-list">
                             <div>
-                                <a property="link" href="https://example.com/song1" target="_blank">
-
-                                    <span property="title">Song 1</span>
-                                </a>
+                                <a property="music" class="icon" target="_blank">🎶 </a>
+                                <span property="title">Song 1</span>
                             </div>
                             <div class="video-column">
-                                <a property="demo" href="https://example.com/demo1" target="_blank" class="icon">🎬</a>
-                                <a property="tutorial" href="https://example.com/tutorial1" target="_blank"
+                                <a property="demo"  target="_blank" class="icon">🕺💃</a>
+                                <a property="tutorial"  target="_blank"
                                     class="icon">🎓</a>
                             </div>
                         </div>
                     </div>
-                    <div property="taught">2023-10-01</div>
-                    <div property="played">2023-10-01</div>
+                    <time property="taught" mv-default="[$today]"></time>
+                    <time property="played" mv-default="[$today]"></time>
                     <div class="learned"><input property="learned" type="checkbox"></div>
                     <div class="rating">
                         <input property="rating" type="radio" id="boot1-1" name="rating1" value="1"><label

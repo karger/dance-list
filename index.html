@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Line Dance List</title>
+    <script src="https://get.mavo.io/mavo.js"></script>
+    <link rel="stylesheet" href="https://get.mavo.io/mavo.css">
+    <script src="https://firebase-plugin.netlify.app/src/mavo-firebase-firestore.js"></script>
+
+    <script>
+        document.addEventListener("mv-login", evt => {
+            console.log("Logged in as", evt.backend.user);
+        });
+    </script>
+    <script defer>
+        (async function () {
+            await Mavo.ready;
+
+            Mavo.DOMExpression.special.event("$user", {
+                type: "mv-login mv-logout",
+                update: (evt) => {
+                    return (evt.type == "mv-login") ? evt.backend.user : null;
+                }
+            });
+        })();
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .mv-status span {
+            display: none;
+        }
+
+        .dance-table {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px;
+        }
+
+
+        .header {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+
+        .songs a {
+            display: block;
+        }
+
+        .video-column {
+            grid-column: 2;
+            display: flex;
+            justify-content: space-around;
+            align-items: top;
+        }
+
+        .rating {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+        }
+
+        .rating input:checked~label {
+            color: gold;
+        }
+
+        .dance-list {
+            display: contents;
+        }
+
+        .dance-entry {
+            display: contents;
+        }
+
+        .rating input[type="radio"] {
+            display: none;
+        }
+
+        .icon {
+            text-decoration: none;
+        }
+
+        .rating label {
+            font-size: 24px;
+            color: gray;
+            cursor: pointer;
+        }
+
+        .rating input[type="radio"]:checked~label {
+            color: lightgray;
+        }
+
+        .rating input[type="radio"]:checked+label {
+            color: black;
+        }
+
+        .rating input[type="radio"]:checked+label~label {
+            color: gray;
+        }
+
+        .rating,
+        .learned {
+            display: none;
+        }
+
+        [mv-list="song"] {
+            display: grid;
+            grid-column: 2/4;
+            grid-template-columns: subgrid;
+        }
+
+        .song-list {
+            display: contents;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" mv-app="sunday" mv-plugins="firebase-firestore" mv-autosave="10"
+        mv-storage="firebase://mavo-cd7c3/dance-list" mv-storage-options="auth"
+        mv-storage-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I">
+        <div property="uid" mv-value="$user.uid"></div>
+
+        <h1>Dance Class List</h1>
+        <div class="dance-table">
+            <div class="header">Title</div>
+            <div class="header">Song</div>
+            <div class="header">Videos</div>
+            <div class="header">Date Taught</div>
+            <div class="header">Last Played</div>
+            <div class="header learned">Learned</div>
+            <div class="header rating">Rating</div>
+
+            <!-- Example Dance Entry -->
+            <div mv-list="dance" class="dance-list">
+                <div mv-list-item class="dance-entry">
+                    <div property="title" mv-default>A Dance</div>
+                    <div mv-list="song" class="songs">
+                        <div mv-list-item class="song-list">
+                            <div>
+                                <a property="link" href="https://example.com/song1" target="_blank">
+
+                                    <span property="title">Song 1</span>
+                                </a>
+                            </div>
+                            <div class="video-column">
+                                <a property="demo" href="https://example.com/demo1" target="_blank" class="icon">🎬</a>
+                                <a property="tutorial" href="https://example.com/tutorial1" target="_blank"
+                                    class="icon">🎓</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div property="taught">2023-10-01</div>
+                    <div property="played">2023-10-01</div>
+                    <div class="learned"><input property="learned" type="checkbox"></div>
+                    <div class="rating">
+                        <input property="rating" type="radio" id="boot1-1" name="rating1" value="1"><label
+                            for="boot1-1">👢</label>
+                        <input type="radio" id="boot1-2" name="rating1" value="2"><label for="boot1-2">👢</label>
+                        <input type="radio" id="boot1-3" name="rating1" value="3"><label for="boot1-3">👢</label>
+                        <input type="radio" id="boot1-4" name="rating1" value="4"><label for="boot1-4">👢</label>
+                        <input type="radio" id="boot1-5" name="rating1" value="5"><label for="boot1-5">👢</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

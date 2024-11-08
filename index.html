@@ -37,7 +37,7 @@
 
         .dance-table {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
             gap: 10px;
             margin: 20px;
         }
@@ -48,12 +48,10 @@
             background-color: #f0f0f0;
         }
 
-
-        .video-column {
-            grid-column: 2;
-            display: flex;
-            justify-content: space-around;
-            align-items: top;
+        [mv-list="song"] {
+            display: grid;
+            grid-column: 2/5;
+            grid-template-columns: subgrid;
         }
 
         :where([mv-app]) .icon.mv-empty:where(:not([mv-mode="edit"]):not(td):not(th)) {
@@ -119,20 +117,27 @@
 
         [mv-list="song"] {
             display: grid;
-            grid-column: 2/4;
+            grid-column: 2/5;
             grid-template-columns: subgrid;
         }
 
         .song-list {
             display: contents;
         }
+
+        .mv-drag-handle {
+            display: none;
+        }
+        [mv-mode="edit"] .mv-drag-handle {
+            display: inline;
+        }
     </style>
 </head>
 
 <body>
 
-    <div id="app" mv-app="sunday" mv-plugins="firebase-firestore" mv-autosave="10"
-        mv-storage="firebase://mavo-cd7c3/dance-list" mv-storage-options="auth"
+    <div id="app" mv-app="sunday" mv-plugins="firebase-firestore"
+        mv-storage="firebase://mavo-cd7c3/dance-list" mv-storage-options="auth realtime"
         mv-storage-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I">
         <div property="uid" mv-value="$user.uid"></div>
 
@@ -140,8 +145,9 @@
         <div class="dance-table">
             <div class="header">Title</div>
             <div class="header">Song</div>
-            <div class="header">Videos</div>
-            <div class="header">Date Taught</div>
+            <div class="header">Demo</div>
+            <div class="header">Teach</div>
+            <div class="header">Taught</div>
             <div class="header">Last Played</div>
             <div class="header learned">Learned</div>
             <div class="header rating">Rating</div>
@@ -149,22 +155,25 @@
             <!-- Example Dance Entry -->
             <div mv-list="dance" class="dance-list">
                 <div mv-list-item class="dance-entry">
-                    <div property="title">A Dance</div>
+                    <div><button class="mv-drag-handle">≡</button> <span property="title">A Dance</span></div>
                     <div mv-list="song" class="songs">
                         <div mv-list-item class="song-list">
                             <div>
+                                <button class="mv-drag-handle">≡</button> 
                                 <a property="music" class="icon" target="_blank">🎶 </a>
                                 <span property="title">Song 1</span>
                             </div>
                             <div class="video-column">
-                                <a property="demo"  target="_blank" class="icon">🕺💃</a>
-                                <a property="tutorial"  target="_blank"
-                                    class="icon">🎓</a>
+                                <a property="demo" target="_blank" class="icon">
+                                    🕺💃</a>
+                            </div>
+                            <div class="video-column">
+                                <a property="tutorial" target="_blank" class="icon">🎓</a>
                             </div>
                         </div>
                     </div>
-                    <time property="taught" mv-default="[$today]"></time>
-                    <time property="played" mv-default="[$today]"></time>
+                    <time property="taught" mv-edit-type="inline" mv-default="[$today]"></time>
+                    <time property="played" mv-edit-type="inline" mv-default="[$today]"></time>
                     <div class="learned"><input property="learned" type="checkbox"></div>
                     <div class="rating">
                         <input property="rating" type="radio" id="boot1-1" name="rating1" value="1"><label

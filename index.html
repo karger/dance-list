@@ -29,14 +29,14 @@
         })();
 
         window.onSpotifyIframeApiReady = (IFrameAPI) => {
-            const element = document.getElementById('embed');
+            const element = document.getElementById('spotify-embed');
             const options = {
                 width: 340
                 , height: 90
                 , uri: 'spotify:track:4QNDlhoal2QdrEObKrxn7j'
             };
             const callback = (EmbedController) => {
-                window.playURL = (url) => {
+                window.playSpotifyURL = (url) => {
                     EmbedController.loadUri(spotifyURI(url));
                     EmbedController.play();
                 };
@@ -50,6 +50,11 @@
             // Remove everything from the beginning up to and including 'track/'
             cleanedUrl = cleanedUrl.split('track/')[1];
             return 'spotify:track:' + cleanedUrl;
+        }
+
+        function youtubeEmbedURL(url) {
+            const videoId = url.split('v=')[1].split('&')[0];
+            return `https://www.youtube.com/embed/${videoId}`;
         }
 
     </script>
@@ -102,6 +107,13 @@
             background-color: #f0f0f0;
             position: sticky;
             top: 160px;
+        }
+
+        .mv-item-bar.custom:where(.mv-ui) {
+            position: static;
+            float: right;
+            vertical-align: baseline;
+            margin: 0;
         }
 
         [mv-list="song"] {
@@ -230,7 +242,7 @@
             <h1>Dance Class List</h1>
 
             <div id="player">
-                <div id="embed"></div>
+                <div id="spotify-embed"></div>
             </div>
 
         </div>
@@ -251,16 +263,19 @@
             <!-- Example Dance Entry -->
             <div mv-list="dance" class="dance-list">
                 <div mv-list-item class="dance-entry">
-                    <div><button class="mv-drag-handle">≡</button> <span property="title">A Dance</span></div>
+                    <div><span property="title">A Dance</span>
+                        <span class="mv-item-bar mv-ui custom"></span>
+                    </div>
                     <div mv-list="song" class="songs">
                         <div mv-list-item class="song-list">
                             <div>
-                                <button class="mv-drag-handle">≡</button>
                                 <button class="quiet-button empty-[!music]">
-                                    <span class="play-button" mv-action="playURL(music)">🎶</span>
-                                    <span property="music"class="on-edit" mv-edit-type="popup" mv-attribute="data-url">🎶</span>
+                                    <span class="play-button" mv-action="playSpotifyURL(music)">🎶</span>
+                                    <span property="music" class="on-edit" mv-edit-type="popup"
+                                        mv-attribute="data-url">🎶</span>
                                 </button>
                                 <span property="title">Song 1</span>
+                                <span class="mv-item-bar mv-ui custom"></span>
                             </div>
                             <div class="video-column">
                                 <a property="demo" target="_blank" class="icon">
@@ -269,7 +284,7 @@
                             <div class="video-column">
                                 <a property="tutorial" target="_blank" class="icon">🎓</a>
                             </div>
-                            <span class="mv-item-bar mv-ui">Hello</span>
+
                         </div>
                     </div>
                     <time property="taught" mv-edit-type="inline" mv-default="[$today]"></time>

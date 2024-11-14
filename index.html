@@ -56,6 +56,36 @@
         }
 
 
+        function youtubeEmbedURL(url) {
+            const videoId = url.split('v=')[1].split('&')[0];
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+
+        function onYouTubeIframeAPIReady() {
+
+            var player = new YT.Player('youtube-embed', {
+                height: '90',
+                width: '340',
+                videoId: 'M7lc1UVf-VE',
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onYoutubeReady,
+                }
+            });
+
+            window.playYoutubeURL = async function (url) {
+                var videoId = null;
+                await ready;
+                player.loadVideoById(videoId);
+            }
+        }
+
+        function stopAll() {
+
+        }
+
 
     </script>
 

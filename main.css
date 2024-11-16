@@ -13,6 +13,10 @@ body {
     margin: 20px;
 }
 
+.hide-if-true {
+    display: none;
+}
+
 #heading {
     position: fixed;
     top: 50px;

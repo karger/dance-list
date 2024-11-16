@@ -7,92 +7,14 @@
     <title>Country Line Dance List</title>
     <script src="https://get.mavo.io/mavo.js"></script>
     <link rel="stylesheet" href="https://get.mavo.io/mavo.css">
-    <script src="https://firebase-plugin.netlify.app/src/mavo-firebase-firestore.js"></script>
-    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
     <link rel="stylesheet" href="main.css">
-
+    <script src="https://firebase-plugin.netlify.app/src/mavo-firebase-firestore.js"></script>
+    <script defer src="main.js"></script>
+    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
     <script src="https://www.youtube.com/iframe_api"></script>
-
-
-    <script>
-        document.addEventListener("mv-login", evt => {
-            console.log("Logged in as", evt.backend.user);
-        });
-    </script>
-    <script defer>
-        (async function () {
-            await Mavo.ready;
-
-            Mavo.DOMExpression.special.event("$user", {
-                type: "mv-login mv-logout",
-                update: (evt) => {
-                    return (evt.type == "mv-login") ? evt.backend.user : null;
-                }
-            });
-        })();
-
-        window.onSpotifyIframeApiReady = (IFrameAPI) => {
-            const element = document.getElementById('spotify-embed');
-            const options = {
-                width: 340
-                , height: 90
-                , uri: 'spotify:track:4QNDlhoal2QdrEObKrxn7j'
-            };
-            const callback = (EmbedController) => {
-                window.playSpotifyURL = (url) => {
-                    EmbedController.loadUri(spotifyURI(url));
-                    EmbedController.play();
-                };
-            };
-            IFrameAPI.createController(element, options, callback);
-        };
-
-        function spotifyURI(url) {
-            // Remove everything after the '?' symbol including the '?'
-            let cleanedUrl = url.split('?')[0];
-            // Remove everything from the beginning up to and including 'track/'
-            cleanedUrl = cleanedUrl.split('track/')[1];
-            return 'spotify:track:' + cleanedUrl;
-        }
-
-
-        function youtubeEmbedURL(url) {
-            const videoId = url.split('v=')[1].split('&')[0];
-            return `https://www.youtube.com/embed/${videoId}`;
-        }
-
-        function onYouTubeIframeAPIReady() {
-
-            var player = new YT.Player('youtube-embed', {
-                height: '90',
-                width: '340',
-                videoId: 'M7lc1UVf-VE',
-                playerVars: {
-                    'playsinline': 1
-                },
-                events: {
-                    'onReady': onYoutubeReady,
-                }
-            });
-
-            window.playYoutubeURL = async function (url) {
-                var videoId = null;
-                await ready;
-                player.loadVideoById(videoId);
-            }
-        }
-
-        function stopAll() {
-
-        }
-
-
-    </script>
-
 </head>
 
 <body>
-
     <div id="app" mv-app="sunday" mv-plugins="firebase-firestore" mv-storage="firebase://mavo-cd7c3/dance-list"
         mv-storage-options="auth realtime" mv-storage-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I">
         <meta property="uid" mv-value="$user.uid">
@@ -103,11 +25,12 @@
 
             <h1>Dance Class List</h1>
 
+            <meta property="usePlayer" mv-value="none">
             <div id="player">
                 <div class="hide-if-[usePlayer != 'spotify']">
                     <div id="spotify-embed"></div>
                 </div>
-                <div class="hide-if-[usePlayer != 'youTube']">
+                <div class="hide-if-[usePlayer != 'youtube']">
                     <div id="youtube-embed"></div>
                 </div>
             </div>
@@ -136,29 +59,33 @@
                     <div mv-list="song" class="songs">
                         <div mv-list-item class="song-list">
                             <div>
+                                <meta property="musicHost" mv-value="findHost(music)">
                                 <button class="quiet-button empty-[!music]">
-                                    <span class="play-button icon"
-                                        mv-action="set(usePlayer,'spotify'), playSpotifyURL(music)">🎶</span>
+                                    <span class="play-button icon hide-if-[!music]"
+                                        mv-action="set(usePlayer, musicHost), playURL(music,musicHost)">
+                                        🎶</span>
                                     <span property="music" class="on-edit" mv-edit-type="popup"
-                                        mv-attribute="data-url">🎶</span>
+                                        mv-attribute="data-href">🎶</span>
                                 </button>
                                 <span property="title">Song 1</span>
                                 <span class="mv-item-bar mv-ui custom"></span>
                             </div>
 
                             <div class="video-column">
-                                <span class="play-button icon"
-                                    mv-action="set(usePlayer,'spotify'), playSpotifyURL(music)">🕺
-                                </span>
-                                <span property="demo" class="" on-edit" mv-edit-type="popup" mv-attribute="data-url">🕺
-                                </span> <!--💃-->
+                                <meta property="demoHost" mv-value="findHost(demo)">
+                                <span class="play-button icon hide-if-[!demo]"
+                                    mv-action="set(usePlayer, demoHost), playURL(demo,demoHost)">
+                                    🕺</span>
+                                <span property="demo" class="on-edit" mv-edit-type="popup" mv-attribute="data-href">
+                                    🕺</span> <!--💃-->
                             </div>
 
                             <div class="video-column">
-                                <span class="play-button icon"
-                                    mv-action="set(usePlayer,'spotify'), playSpotifyURL(music)">🎓
+                                <meta property="tutorialHost" mv-value="findHost(tutorial)">
+                                <span class="play-button icon hide-if-[!tutorial]"
+                                    mv-action="set(usePlayer, tutorialHost), playURL(tutorial,tutorialHost)">🎓
                                 </span>
-                                <span property="tutorial" class="" on-edit" mv-edit-type="popup"
+                                <span property="tutorial" class="on-edit" mv-edit-type="popup"
                                     mv-attribute="data-url">🎓
                                 </span>
                             </div>

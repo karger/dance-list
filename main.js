@@ -71,6 +71,11 @@ let players = [
         host: 'youtube',
         regex: /https:\/\/www.youtube.com\/watch\?v=([a-zA-Z0-9]*)/,
         api: youtubePromise
+    },
+    {
+        host: 'youtube',
+        regex: /https:\/\/www.youtu.be\/([a-zA-Z0-9]*)/,
+        api: youtubePromise
     }
 ]
 

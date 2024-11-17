@@ -22,6 +22,7 @@ body {
 
 :root {
     --player-height: 120;
+    --player-width: 400;
 }
 
 [mv-app] {
@@ -32,7 +33,6 @@ body {
 
 #heading {
     top: 0;
-    height: calc(var(--player-height)*1px + 80px);
     width: 100%;
     background-color: white;
     box-sizing: border-box;
@@ -46,6 +46,10 @@ body {
     justify-content: space-between;
 }
 
+#player {
+    padding: 10px;
+}
+
 .mv-item-bar.custom:where(.mv-ui) {
     position: static;
     float: right;
@@ -54,7 +58,7 @@ body {
 }
 
 #no-player {
-    height: calc(var(--player-height)*1px + 80px);
+    height: calc(var(--player-height)*1px);
 }
 
 .header {
@@ -62,7 +66,6 @@ body {
     background-color: #f0f0f0;
     position: sticky;
     box-sizing: border-box;
-    tip: calc(var(--player-height)*1px);
     top: 0;
 }
 

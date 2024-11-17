@@ -16,7 +16,7 @@ let spotifyPromise = new Promise(resolve => {
     window.onSpotifyIframeApiReady = (IFrameAPI) => {
         const element = document.getElementById('spotify-embed');
         const options = {
-            width: 340
+            width: getComputedStyle(element).getPropertyValue("--player-width")
             , height: getComputedStyle(element).getPropertyValue("--player-height")
             , uri: 'spotify:track:4QNDlhoal2QdrEObKrxn7j'
         };
@@ -38,25 +38,26 @@ let spotifyPromise = new Promise(resolve => {
 //must run before loading youtube api
 let youtubePromise = new Promise(resolve => {
     window.onYouTubeIframeAPIReady = () => {
-        var player = new YT.Player('youtube-embed', {
-            height: getComputedStyle(document.getElementById('youtube-embed')).getPropertyValue("--player-height"),
-            width: '340',
-            videoId: 'M7lc1UVf-VE',
-            playerVars: {
-                'playsinline': 1
-            },
-            events: {
-                'onReady': (event => {
-                    let player = event.target;
-                    resolve({
-                        play: (id) => {
-                            player.loadVideoById(id);
-                        },
-                        stop: player.pauseVideo.bind(player)
+        let style = getComputedStyle(document.getElementById('youtube-embed')),
+            player = new YT.Player('youtube-embed', {
+                height: style.getPropertyValue("--player-height"),
+                width: style.getPropertyValue("--player-width"),
+                videoId: 'M7lc1UVf-VE',
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': (event => {
+                        let player = event.target;
+                        resolve({
+                            play: (id) => {
+                                player.loadVideoById(id);
+                            },
+                            stop: player.pauseVideo.bind(player)
+                        })
                     })
-                })
-            }
-        });
+                }
+            });
     }
 });
 

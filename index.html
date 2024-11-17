@@ -21,21 +21,25 @@
 
         <div id="heading">
             <div class="mv-bar mv-ui"></div>
-            <h1>Dance Class List</h1>
+            <div class="content">
+                <h1>Dance Class List</h1>
 
-            <meta property="usePlayer" mv-value="none">
-            <div id="player">
-                <div class="hide-if-[usePlayer != 'spotify']">
-                    <div id="spotify-embed"></div>
-                </div>
-                <div class="hide-if-[usePlayer != 'youtube']">
-                    <div id="youtube-embed"></div>
+                <div id="player">
+                    <meta property="usePlayer" mv-value="none">
+                    <div id="no-player" class="hide-if-[usePlayer != 'none']">
+                    </div>
+                    <div class="hide-if-[usePlayer != 'spotify']">
+                        <div id="spotify-embed"></div>
+                    </div>
+                    <div class="hide-if-[usePlayer != 'youtube']">
+                        <div id="youtube-embed"></div>
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <div class="dance-table">
+
+        <div id="dance-table">
             <div class="header">Title</div>
             <div class="header">Song</div>
             <div class="header">Demo</div>

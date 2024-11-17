@@ -17,7 +17,7 @@ let spotifyPromise = new Promise(resolve => {
         const element = document.getElementById('spotify-embed');
         const options = {
             width: 340
-            , height: 90
+            , height: getComputedStyle(element).getPropertyValue("--player-height")
             , uri: 'spotify:track:4QNDlhoal2QdrEObKrxn7j'
         };
         IFrameAPI.createController(element, options, embedController => {
@@ -39,7 +39,7 @@ let spotifyPromise = new Promise(resolve => {
 let youtubePromise = new Promise(resolve => {
     window.onYouTubeIframeAPIReady = () => {
         var player = new YT.Player('youtube-embed', {
-            height: '90',
+            height: getComputedStyle(document.getElementById('youtube-embed')).getPropertyValue("--player-height"),
             width: '340',
             videoId: 'M7lc1UVf-VE',
             playerVars: {

@@ -16,7 +16,8 @@
 
 <body>
     <div id="app" mv-app="sunday" mv-plugins="firebase-firestore" mv-storage="firebase://mavo-cd7c3/dance-list"
-        mv-storage-options="auth realtime" mv-storage-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I">
+        mv-storage-options="auth realtime skip-unsaved-data-warning" 
+        mv-storage-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I">
         <meta property="uid" mv-value="$user.uid">
 
         <div id="heading">
@@ -63,7 +64,7 @@
                                 <meta property="musicHost" mv-value="findHost(music)">
                                 <button class="quiet-button empty-[!music]">
                                     <span class="play-button icon hide-if-[!music]"
-                                        mv-action="set(usePlayer, musicHost), playURL(music,musicHost)">
+                                        mv-action="set(usePlayer, musicHost), playURL(music)">
                                         🎶</span>
                                     <span property="music" class="on-edit" mv-edit-type="popup"
                                         mv-attribute="data-href">🎶</span>
@@ -75,7 +76,7 @@
                             <div class="video-column">
                                 <meta property="demoHost" mv-value="findHost(demo)">
                                 <span class="play-button icon hide-if-[!demo]"
-                                    mv-action="set(usePlayer, demoHost), playURL(demo,demoHost)">
+                                    mv-action="set(usePlayer, demoHost), playURL(demo)">
                                     🕺</span>
                                 <span property="demo" class="on-edit" mv-edit-type="popup" mv-attribute="data-href">
                                     🕺</span> <!--💃-->
@@ -84,7 +85,7 @@
                             <div class="video-column">
                                 <meta property="tutorialHost" mv-value="findHost(tutorial)">
                                 <span class="play-button icon hide-if-[!tutorial]"
-                                    mv-action="set(usePlayer, tutorialHost), playURL(tutorial,tutorialHost)">🎓
+                                    mv-action="set(usePlayer, tutorialHost), playURL(tutorial)">🎓
                                 </span>
                                 <span property="tutorial" class="on-edit" mv-edit-type="popup"
                                     mv-attribute="data-url">🎓

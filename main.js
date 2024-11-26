@@ -55,43 +55,53 @@ let youtubePromise = new Promise(resolve => {
                             },
                             stop: player.pauseVideo.bind(player)
                         })
+                    }),
+                    'onError': (event => {
+                        window.open(player.getVideoUrl());
                     })
                 }
             });
     }
 });
 
+let apis = [spotifyPromise, youtubePromise];
+
 let players = [
     {
-        host: 'spotify',
+        embed: 'spotify',
         regex: /https:\/\/open.spotify.com\/track\/([a-zA-Z0-9]*)/,
         api: spotifyPromise
     },
     {
-        host: 'youtube',
-        regex: /https:\/\/www.youtube.com\/watch\?v=([a-zA-Z0-9]*)/,
+        embed: 'youtube',
+        regex: /https:\/\/www.youtube.com\/watch.*\?v=([a-zA-Z0-9_-]*)/,
         api: youtubePromise
     },
     {
-        host: 'youtube',
-        regex: /https:\/\/www.youtu.be\/([a-zA-Z0-9]*)/,
+        embed: 'youtube',
+        regex: /https:\/\/www.youtube.com\/shorts\/([a-zA-Z0-9_-]*)/,
+        api: youtubePromise
+    },
+    {
+        embed: 'youtube',
+        regex: /https:\/\/www.youtu.be\/([a-zA-Z0-9_-]*)/,
         api: youtubePromise
     }
-]
+];
 
-window.findHost = (url) => players.find(player => player.regex.test(url))?.host || 'none';
+window.findHost = (url) => players.find(player => player.regex.test(url))?.embed || 'none';
 
-window.playURL = async function (url, host) {
+window.playURL = async function (url) {
     url = url.toJSON();
-    host = host.toJSON();
-    players.forEach(async player => {
-        (await player.api).stop();
-    });
-    if (host == 'none') {
-        window.open(url);
-    } else {
-        let player = players.find(player => player.host == host);
-        let id = url.match(player.regex)[1];
-        (await player.api).play(id);
-    }
+    for (api of apis) {
+        (await api).stop();
+    };
+    for (player of players) {
+        if (id = url.match(player.regex)?.[1]) {
+            (await player.api).play(id);
+            return;
+        }
+    };
+    //no player found, open in new tab
+    window.open(url);
 }

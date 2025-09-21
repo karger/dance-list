@@ -37,32 +37,45 @@ let spotifyPromise = new Promise(resolve => {
 
 //must run before loading youtube api
 let youtubePromise = new Promise(resolve => {
-    window.onYouTubeIframeAPIReady = () => {
-        let style = getComputedStyle(document.getElementById('youtube-embed')),
-            player = new YT.Player('youtube-embed', {
-                height: style.getPropertyValue("--player-height"),
-                width: style.getPropertyValue("--player-width"),
-                videoId: 'M7lc1UVf-VE',
-                playerVars: {
-                    'playsinline': 1
-                },
-                events: {
-                    'onReady': (event => {
-                        let player = event.target;
-                        resolve({
-                            play: (id) => {
-                                player.loadVideoById(id);
-                            },
-                            stop: player.pauseVideo.bind(player)
-                        })
-                    }),
-                    'onError': (event => {
-                        window.open(player.getVideoUrl());
-                    })
-                }
-            });
+  window.onYouTubeIframeAPIReady = () => {
+    console.log('YouTube IFrame API ready');
+
+    const el = document.getElementById('youtube-embed');
+    if (!el) {
+      console.warn('No #youtube-embed element found');
+      return;
     }
+
+    const cs = getComputedStyle(el);
+    const height = parseInt(cs.getPropertyValue("--player-height"), 10) || 315;
+    const width  = parseInt(cs.getPropertyValue("--player-width"), 10)  || 560;
+
+    const yt = new YT.Player('youtube-embed', {
+      height, width,
+      videoId: 'M7lc1UVf-VE',
+      playerVars: {
+        playsinline: 1,
+        autoplay: 0,
+        controls: 1,
+        origin: window.location.origin
+      },
+      events: {
+        onReady: (event) => {
+          const player = event.target;
+          resolve({
+            play: (id) => player.loadVideoById(id),
+            stop: player.pauseVideo.bind(player)
+          });
+        },
+        onError: (event) => {
+          console.warn('YT error', event.data);
+          try { window.open(yt.getVideoUrl()); } catch {}
+        }
+      }
+    });
+  };
 });
+
 
 let apis = [spotifyPromise, youtubePromise];
 

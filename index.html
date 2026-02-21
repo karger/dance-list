@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="main.css">
     <script src="https://firebase-plugin.netlify.app/src/mavo-firebase-firestore.js"></script>
     <script defer src="main.js"></script>
-    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <script defer src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+    <script defer src="https://www.youtube.com/iframe_api"></script>
 </head>
 
 <body>
@@ -28,14 +28,15 @@
 
                 <div id="player">
                     <meta property="usePlayer" mv-value="none">
+                    <div class="hide-if-[usePlayer != 'youtube']">
+                        <!--must go first to prevent controls from vanishing-->
+                        <div id="youtube-embed"></div>
+                    </div>
                     <div class="hide-if-[usePlayer != 'none']">
                         <div id="no-player"></div>
                     </div>
                     <div class="hide-if-[usePlayer != 'spotify']">
                         <div id="spotify-embed"></div>
-                    </div>
-                    <div class="hide-if-[usePlayer != 'youtube']">
-                        <div id="youtube-embed"></div>
                     </div>
                 </div>
             </div>

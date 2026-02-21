@@ -17,11 +17,13 @@ body {
 }
 
 .hide-if-true {
-    display: none;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
 }
 
 :root {
-    --player-height: 120;
+    --player-height: 220;
     --player-width: 400;
 }
 
@@ -90,7 +92,8 @@ body {
 button.quiet-button {
     background: none;
     border: none;
-    cursor: pointer
+    cursor: pointer;
+    min-width: 3em;
 }
 
 [mv-app]:not([mv-mode="edit"]) .on-edit {

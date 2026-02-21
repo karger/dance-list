@@ -74,6 +74,7 @@ let youtubePromise = new Promise(resolve => {
                 onReady: (event) => {
                     const player = event.target;
                     console.log('YouTube Player Ready');
+                    document.documentElement.style.setProperty('--youtube-display', 'none');
                     resolve({
                         play: (id) => player.loadVideoById(id),
                         stop: player.pauseVideo.bind(player)
@@ -81,7 +82,10 @@ let youtubePromise = new Promise(resolve => {
                 },
                 onError: (event) => {
                     console.warn('YT error', event.data);
-                    try { window.open(yt.getVideoUrl()); } catch { }
+                    resolve({
+                        play: (id) => window.open(yt.getVideoUrl());
+                        stop: () => {}
+                    });
                 }
             }
         });

@@ -28,15 +28,14 @@
 
                 <div id="player">
                     <meta property="usePlayer" mv-value="none">
-                    <div class="hide-if-[usePlayer != 'youtube']">
-                        <!--must go first to prevent controls from vanishing-->
-                        <div id="youtube-embed"></div>
-                    </div>
                     <div class="hide-if-[usePlayer != 'none']">
                         <div id="no-player"></div>
                     </div>
                     <div class="hide-if-[usePlayer != 'spotify']">
                         <div id="spotify-embed"></div>
+                    </div>
+                    <div class="hide-youtube-if-[usePlayer != 'youtube']">
+                        <div id="youtube-embed"></div>
                     </div>
                 </div>
             </div>

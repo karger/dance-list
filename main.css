@@ -17,9 +17,14 @@ body {
 }
 
 .hide-if-true {
-    opacity: 0;
-    width: 1px;
-    height: 1px;
+    display: none;
+}
+
+/* hack because ytplayer must be initialized in a non-hidden element
+https://stackoverflow.com/questions/50857499/youtube-api-error-failed-to-execute-postmessage-on-domwindow
+ */
+.hide-youtube-if-true {
+    display: var(--youtube-display, block);
 }
 
 :root {

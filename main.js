@@ -83,8 +83,8 @@ let youtubePromise = new Promise(resolve => {
                 onError: (event) => {
                     console.warn('YT error', event.data);
                     resolve({
-                        play: (id) => window.open(yt.getVideoUrl());
-                        stop: () => {}
+                        play: (id) => window.open(yt.getVideoUrl()),
+                        stop: () => { }
                     });
                 }
             }
